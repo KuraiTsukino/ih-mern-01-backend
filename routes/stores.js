@@ -16,6 +16,12 @@ router.get("/readall", storeController.readAll)
 // Leer una tienda
 router.get("/readone/:id", storeController.readOne)
 
+// Actualizar una tienda.
+router.put("/edit/:id", storeController.edit)
+
+// Borrar una tienda.
+router.delete("/delete/:id", storeController.delete)
+
 // 3. Exportaciones
 
 module.exports = router

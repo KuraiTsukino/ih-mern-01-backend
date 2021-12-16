@@ -5,6 +5,7 @@ exports.create = async (req, res) => {
     // Del formulario, creamos variables y asignamos valores.
 
     const {
+        nombre,
         domicilio,
         telefono
     } = req.body
@@ -12,6 +13,7 @@ exports.create = async (req, res) => {
     // Crear una tienda en base de datos.
     try {
         const newStore = await Store.create({
+            nombre,
             domicilio,
             telefono
         })
@@ -67,4 +69,59 @@ exports.readOne = async (req, res) => {
         })
         
     }
+}
+
+exports.edit = async (req, res) =>  {
+    
+    const { id } = req.params
+
+    // Obteniendo datos del formulario
+    const {
+        nombre,
+        domicilio,
+        telefono
+    } = req.body
+
+    try {
+        const updatedStore = await Store.findByIdAndUpdate(
+            id,
+            {
+                nombre,
+                domicilio,
+                telefono
+            },
+            {new:true}
+            )
+            res.json({
+                msg: "Tienda actualizada con éxito",
+                data: updatedStore
+            })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: "Hubo un error con la actualización de la tienda",
+            error: error
+        })
+    }
+}
+
+exports.delete = async (req, res) => {
+
+    const { id } = req.params
+
+    try {
+        const deletedStore = await Store.findByIdAndDelete({_id: id})
+
+        res.json ({
+            msg: "Tienda borrada con éxito",
+            data: deletedStore
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: "Hubo un error borrando la tienda",
+            error: error
+        })
+    }
+
 }
